@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>dySEM overview</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">dySEM overview</h1>
+
+
+
+<div id="why-dysem" class="section level2">
+<h2>Why <code>dySEM</code>?</h2>
+<ul>
+<li>Speeds up writing <code>lavaan</code> syntax for latent dyadic
+models</li>
+<li>Makes it easy to share your code</li>
+<li>Helps prevent typos or model-misspecifications mucking up your
+analyses and/or reporting</li>
+<li>Creates figures and “90% Ready” tables of results for you</li>
+</ul>
+</div>
+<div id="the-dysem-workflow-at-a-glance" class="section level2">
+<h2>The <code>dySEM</code> Workflow at a Glance</h2>
+<p><code>dySEM</code> is designed to be maximally useful if you are
+following some best-practices for reproducibility when using <em>R</em>.
+Namely, using a separate directory with an R Studio Project
+(<code>.Rproj</code>, see <a href="https://r4ds.had.co.nz/workflow-projects.html">here</a> if you are
+new to using projects) will allow <code>dySEM</code> to be more helpful,
+by creating sub-folders for your <code>scripts</code> and
+<code>output</code> where it will automatically save any scripts you
+create, or any tables and/or figures of output that you create.
+<code>dySEM</code> will still do these things without the use of an R
+Studio project, but all bets are off for where R Studio will attempt to
+save them.</p>
+<p>A typical <code>dySEM</code> workflow is then as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Import and wrangle your <strong>Data</strong> to a <em>dyad
+structure data set</em></li>
+<li><strong>Scrape</strong> variables from your data frame</li>
+<li><strong>Script</strong> your preferred model</li>
+<li><strong>Fit</strong> and <strong>Inspect</strong> your scripted
+model using <code>lavaan</code></li>
+<li><strong>Output</strong> statistical table(s) and or
+visualization(s)</li>
+</ol>
+<p>You might also use optional <code>dySEM</code> calculators after Step
+3 to <strong>get</strong> some additional information.</p>
+<p>These families of functions–<strong><em>Scrapers</em></strong>,
+<strong><em>Scripters</em></strong>, and
+<strong><em>Outputters</em></strong>, and
+<strong><em>Getters</em></strong>–are listed and described in the <a href="https://jsakaluk.github.io/dySEM/reference/index.html">Reference</a></p>
+<p>We now demonstrate a typical <code>dySEM</code> workflow, using the
+built-in <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/DRES-data.R"><code>DRES</code></a>
+data (Raposo, Impett, &amp; Muise, 2020), in order to perform dyadic
+confirmatory factor analysis (CFA). More elaborate and specific
+vignettes are forthcoming to provide didactic materials for conducting
+other sorts of dyadic data analyses via <code>dySEM</code>.</p>
+</div>
+<div id="import-and-wrangle-data" class="section level2">
+<h2>1. Import and Wrangle Data</h2>
+<p>We will use a subset of <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/DRES-data.R"><code>DRES</code></a>,
+consisting of 121 dyadic couples’ ratings of relationship quality on 9
+of the <a href="https://psycnet.apa.org/record/2000-13970-007">PRQC</a>
+indicators (1 = <em>not at all</em>, 7 = <em>extremely</em>; all
+indicators positively keyed). Structural equation modeling (SEM)
+programs like <code>lavaan</code> require dyadic data to be in <em>dyad
+structure dataset</em>, whereby each row contains the data for one dyad,
+with separate columns for each observation (in this case, indicator
+variables of latent relationship quality) made for each member of the
+dyad. We may eventually build in data-transformation functions to go
+from various data structures to a <em>dyad structure</em>, but for now,
+we recommend <a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>tidyr::pivot_wider</code></a>
+or the tools provided by <a href="http://davidakenny.net/RDDD.htm">Ledermann &amp; Kenny
+(2014)</a></p>
+<p>Like many real-world analytic contexts, <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/DRES-data.R"><code>DRES</code></a>
+contains a number of other variables that we aren’t interested in
+modeling at this time (specifically, 5 indicators of sexual satisfaction
+from the <a href="https://pubmed.ncbi.nlm.nih.gov/16123841/">GMSEX</a>
+for each dyad member). This will not be a problem for
+<code>dySEM</code>.</p>
+<p>Our data set therefore results in a tibble that is 121 (# of couples)
+x 28 ((9 PRQC items + 5 GMSEX items) x 2 (# of dyad members)):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>DRES</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 121 × 28</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt;    PRQC_1.1 PRQC_2.1 PRQC_3.1 PRQC_4.1 PRQC_5.1 PRQC_6.1 PRQC_7.1 PRQC_8.1</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt;       &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt;  1        7        7        7        7        7        7        7        5</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt;  2        6        6        6        7        7        6        5        5</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt;  3        7        7        7        7        7        7        7        6</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;  4        6        6        6        7        7        6        5        6</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;  5        7        7        7        7        7        6        7        6</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  6        6        6        6        6        6        3        6        5</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  7        7        6        7        6        6        6        5        6</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  8        6        7        7        7        7        6        5        6</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  9        7        7        7        7        7        6        6        6</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; 10        6        6        6        7        7        7        4        4</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 111 more rows</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: PRQC_9.1 &lt;int&gt;, PRQC_1.2 &lt;int&gt;, PRQC_2.2 &lt;int&gt;,</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt; #   PRQC_3.2 &lt;int&gt;, PRQC_4.2 &lt;int&gt;, PRQC_5.2 &lt;int&gt;, PRQC_6.2 &lt;int&gt;,</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt; #   PRQC_7.2 &lt;int&gt;, PRQC_8.2 &lt;int&gt;, PRQC_9.2 &lt;int&gt;, sexsat1.1 &lt;int&gt;,</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; #   sexsat2.1 &lt;int&gt;, sexsat3.1 &lt;int&gt;, sexsat4.1 &lt;int&gt;, sexsat5.1 &lt;int&gt;,</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; #   sexsat1.2 &lt;int&gt;, sexsat2.2 &lt;int&gt;, sexsat3.2 &lt;int&gt;, sexsat4.2 &lt;int&gt;,</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; #   sexsat5.2 &lt;int&gt;</span></span></code></pre></div>
+</div>
+<div id="scrape" class="section level2">
+<h2>2. Scrape</h2>
+<p>The first step in a typical <code>dySEM</code> workflow is to
+<strong>scrape</strong> the indicator variables that are to feature in
+your latent dyadic model. The scraping functions in <code>dySEM</code>
+accomplish this by making an important but reasonable (in most cases)
+assumptions about how the useR has named their indicator variables.
+Specifically:</p>
+<blockquote>
+<p>Indicator variables of a latent variable will be named in a highly
+repetitious manner, distinguished by partner using two numbers or
+characters</p>
+</blockquote>
+<div id="anatomy-of-a-repetitious-indicator-name" class="section level3">
+<h3>Anatomy of a Repetitious Indicator Name</h3>
+<p>The <code>dySEM</code> scrapers consider appropriately repetitiously
+named indicators as consisting of at least three distinct elements:
+<strong>s</strong>tem, <strong>i</strong>tem, and
+<strong>p</strong>artner. For longitudinal designs, a fourth
+element–<strong>t</strong>ime is also considered to be part of the
+repetitious structure of variable names, but we cover longitudinal
+variable-scraping in a separate vignette. <strong>delimiter</strong>
+characters (e.g., “.”, “_“) are commonly–but not always–used to separate
+some/all of these elements.</p>
+<p><strong>TO DO: MAKE THIS SIMPLER AND START WITH VISUALS AT THIS
+POINT</strong></p>
+<ol style="list-style-type: decimal">
+<li>The indicator <strong>s</strong>tem (i.e., the character(s) that
+captures to which scale/latent variable the indicators correspond, e.g.,
+“PRQC”, “sexsat”, “BFI”, etc.). The contents of indicator stems will
+vary considerably both within and between data sets.</li>
+<li>The indicator <strong>i</strong>tem number (i.e, the number that
+captures which indicator–within a set of indicators of some <em>n</em>
+length–is located in a given column, e.g., 1-9 for our PRQC items)</li>
+<li>And the number or character <strong>p</strong>artner capturing to
+which member of the dyad (the first or second) a given indicator
+corresponds (e.g., “A” or “B”, “M” or “F”, “1” or “2”).
+<strong><em>Note</em></strong>: this is only about variable selection;
+this has no bearing on whether a given dyadic model is specified to be
+(in)distinguishable (which is determined by the
+<strong>script</strong>).</li>
+</ol>
+<p><code>dySEM</code> scrapers largely function by asking you to specify
+in what order the elements of variable names are ordered. For example: *
+<code>x_order = &quot;sip&quot;</code> would scrape variable names according to a
+<strong>s</strong>tem –&gt; <strong>i</strong>tem –&gt;
+<strong>p</strong>artner order (e.g., PRQC)</p>
+</div>
+<div id="using-dysem-scrapers" class="section level3">
+<h3>Using <code>dySEM</code> Scrapers</h3>
+<p>The <code>scrapeVarCross</code> function is your <code>dySEM</code>
+scraper for cross-sectional dyadic data. It can accommodate scraping
+indicators for models featuring one latent variable (e.g., as in our
+dyadic CFA), as well as bivariate latent variable models, such as the
+Actor-Partner Interdependence Model (APIM). We cover scraping and
+scripting of these bivariate models in other vignettes.</p>
+<p>We first supply our data frame, <code>DRES</code>. We want to extract
+our PRQC indicators, which have the following properties:</p>
+<ul>
+<li>a reoccuring <strong>S</strong>tem of “PRQC”</li>
+<li>distinguishing <strong>P</strong>artner characters of “1” and
+“2”</li>
+<li>a “sip” (<strong>S</strong>tem, <strong>I</strong>tem,
+<strong>P</strong>artner) order of elements</li>
+<li>the <strong>S</strong> and <strong>I</strong> are separated by a “_”
+<strong>delimiter</strong></li>
+<li>the <strong>I</strong> and <strong>P</strong> are separated by a “.”
+<strong>delimiter</strong></li>
+</ul>
+<p>Feeding this information to <code>scrapeVarCross</code> is quite
+straightforward:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dvn <span class="ot">&lt;-</span> <span class="fu">scrapeVarCross</span>(DRES, <span class="at">x_order =</span> <span class="st">&quot;sip&quot;</span>, <span class="at">x_stem =</span> <span class="st">&quot;PRQC&quot;</span>, <span class="at">x_delim1=</span><span class="st">&quot;_&quot;</span>,<span class="at">x_delim2=</span><span class="st">&quot;.&quot;</span>,  <span class="at">distinguish_1=</span><span class="st">&quot;1&quot;</span>, <span class="at">distinguish_2=</span><span class="st">&quot;2&quot;</span>)</span></code></pre></div>
+<p>Before looking at what <code>scrapeVarCross</code> returns, you may
+be wondering:</p>
+<ol style="list-style-type: decimal">
+<li>Where is information about <strong>I</strong>tem number for each
+indicator specified? And…</li>
+<li>What should you do if your indicator names don’t use two (or any)
+delimiting characters?</li>
+</ol>
+<p>The answer to 1. is that <strong>I</strong>tem number is
+automatically captured “behind the scenes” by
+<code>scrapeVarCross</code>. Specifically, <code>scrapeVarCross</code>
+searches for (and then captures) any variable names containing your stem
+and <em>any</em> digit(s) (using a regular expression).</p>
+<p>The answer to 2. is that you would simply omit the
+<code>x_delim1</code> and/or <code>x_delim2</code> arguments–by default,
+<code>scrapeVarCross</code> will create variable names from
+<strong>S</strong> <strong>I</strong> and <strong>P</strong> without any
+separating delimiters, unless you declare a character in one/both
+delimiter arguments.</p>
+<p><code>scrapeVarCross</code> returns a generic list (which I refer to
+as a <code>dvn</code> for a list of “dyad variable names”) consisting of
+6 (or 9, if scraping for a bivariate model) elements:</p>
+<ol style="list-style-type: decimal">
+<li>a vector of indicator names for the first member of the dyad</li>
+<li>a vector of indicator names for the second member of the dyad</li>
+<li>a number capturing how many indicators per dyad member were
+stored</li>
+<li>the distinguishing character in names for indicators from the first
+member of the dyad</li>
+<li>the distinguishing character in names for indicators from the second
+member of the dyad</li>
+<li>the total number of indicators scraped</li>
+</ol>
+<p>This might not seem like much, but the list returned by
+<code>scrapeVarCross</code> contains <em>all</em> the information needed
+to automate the scripting of <code>lavaan</code> syntax for virtually
+any dyadic SEM that you can imagine.</p>
+</div>
+</div>
+<div id="script" class="section level2">
+<h2>3. Script</h2>
+<p>The <code>script...()</code> <strong>TODO</strong>: CREATE/LINK to
+family in Reference on pkgdown site: family of functions in
+<code>dySEM</code> simplify the process of accurately and reproducibly
+scripting dyadic SEMs to a singleton line of R code.</p>
+<p>Each <em>Scripter</em> function is a wrapper for a series of
+<em>Helper</em> functions (see <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/scriptHelpers.R"><code>scriptHelpers.R</code></a>
+if you are interested) that snatch the information about the indicators
+they need from a saved <code>dvn</code> object and combine it with other
+text to write the <code>lavaan</code> syntax for a particular part of
+the measurement (e.g., factor loadings, item intercepts) or structural
+(e.g., regression slopes, factor means) portion of your model.</p>
+<p><em>Scripter</em> functions like <a href="https://github.com/jsakaluk/dySEM/blob/master/R/scriptCFA.R"><code>scriptCFA</code></a>
+typically require only three arguments to be specified:</p>
+<ol style="list-style-type: decimal">
+<li>the <code>dvn</code> object (e.g., from <code>scrapeVarCross</code>)
+to be used to script the model</li>
+<li>a mostly arbitrary name for the latent variable(s) you are modeling
+(bivariate model scripting functions like <code>scriptAPIM</code> have
+you input two names)</li>
+<li>the kind of parameter equality constraints that you wish to be
+imposed (if any), such as those corresponding to particular levels of
+measurement invariance (e.g., “loading”), or even a fully
+“indistinguishable” model (i.e., in which all measurement and structural
+parameters are constrained to equality between partners)</li>
+</ol>
+<p>If you plan on scripting multiple models, I recommend that you name
+the output of <code>Scripters</code> to include information about the
+latent variable’s name (from 2.) and model (from 3.). For example, if we
+were to use <code>scriptCFA</code> to generate scripts for an
+indistinguishable CFA (i.e., both imposing dyadic invariance and
+equality of latent variances and means between partners [the default
+options for the constr_dy_meas and constr_dy_struct arguments]) of the
+PRQC items we scraped, we could specify</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>qual.indist.script <span class="ot">&lt;-</span> <span class="fu">scriptCFA</span>(dvn, <span class="at">lvname =</span> <span class="st">&quot;Quality&quot;</span>)</span></code></pre></div>
+<p><code>scriptCFA</code> returns to your environment an (ugly, to the
+human-eyes) character object consisting of the <code>lavaan</code>
+syntax corresponding to the model that matches the <em>Scripter</em>
+function (i.e., in this case a CFA) and input for the <code>model</code>
+argument (i.e., configurally invariant).</p>
+<p>Meanwhile, behind the scenes, <code>scriptCFA</code> has created a
+folder in your working directory called “scripts”, and has stored a .txt
+file containing the (less-ugly, to the human eyes) <code>lavaan</code>
+syntax for your model. The file will be named as a combination of your
+<code>lvname</code> and <code>model</code> arguments.</p>
+<p>We think this syntax-exporting-.txt feature serves three important
+purposes:</p>
+<ol style="list-style-type: decimal">
+<li>It makes it easy to immediately share your analytic code (i.e., just
+drop the .txt file in your OSF project)</li>
+<li>It can be useful as an exemplar from which to learn how certain
+model features of dyadic SEMs are scripted in <code>lavaan</code>. For
+example, our <code>Scripters</code> manually specify (and label) the
+estimation of certain parameters that would already be estimated by
+default, but this way you can learn how differences in model
+specification (e.g., changing to a different level of invariance)
+impacts the <code>lavaan</code> syntax. And…</li>
+<li>Should you require a model that is more customizable (e.g., a
+particular pattern of partial dyadic invariance), the text in the .txt
+file can serve as useful starting point for scripting your model that
+should (hopefully) only require but a few “handmade” changes (e.g.,
+keeping most item intercepts equated via
+<code>model = &quot;intercepts</code>, and manually freeing only those that
+are appreciably different).</li>
+</ol>
+<p>The modeling efficiency and accuracy gained via <code>dySEM</code>’s
+automated scripting may already be apparent, but becomes painfully
+obvious once you leverage <code>dySEM</code> to quickly script a
+sequence of competing models (e.g., from configural invariance CFA –&gt;
+fully indistinguishable CFA)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>qual.res.script <span class="ot">&lt;-</span> <span class="fu">scriptCFA</span>(dvn, <span class="at">lvname =</span> <span class="st">&quot;Quality&quot;</span>, <span class="at">constr_dy_meas =</span> <span class="fu">c</span>(<span class="st">&quot;loadings&quot;</span>, <span class="st">&quot;intercepts&quot;</span>, <span class="st">&quot;residuals&quot;</span>), <span class="at">constr_dy_struct =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>qual.int.script <span class="ot">&lt;-</span> <span class="fu">scriptCFA</span>(dvn, <span class="at">lvname =</span> <span class="st">&quot;Quality&quot;</span>, <span class="at">constr_dy_meas =</span> <span class="fu">c</span>(<span class="st">&quot;loadings&quot;</span>, <span class="st">&quot;intercepts&quot;</span>), <span class="at">constr_dy_struct =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>qual.load.script <span class="ot">&lt;-</span> <span class="fu">scriptCFA</span>(dvn, <span class="at">lvname =</span> <span class="st">&quot;Quality&quot;</span>, <span class="at">constr_dy_meas =</span> <span class="fu">c</span>(<span class="st">&quot;loadings&quot;</span>), <span class="at">constr_dy_struct =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>qual.config.script <span class="ot">&lt;-</span> <span class="fu">scriptCFA</span>(dvn, <span class="at">lvname =</span> <span class="st">&quot;Quality&quot;</span>, <span class="at">constr_dy_meas =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>), <span class="at">constr_dy_struct =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>))</span></code></pre></div>
+<p>The scripting of longitudinal dyadic SEM models is not yet supported
+by <code>dySEM</code>, but we hope to develop this functionality over
+the Spring/Summer 2021.</p>
+</div>
+<div id="fit-and-inspect" class="section level2">
+<h2>4. Fit and Inspect</h2>
+<p>By design, we have attempted to avoid functionality pertaining to
+model-fitting and inspection in <code>dySEM</code>: <code>lavaan</code>
+does that perfectly well itself. We therefore strongly recommend that
+you cultivate a command of <code>lavaan</code>’s basic functionality
+before delving too far with <code>dySEM</code>–the package <a href="https://lavaan.ugent.be/tutorial/index.html">tutorial website</a>
+is a very good place to get started.</p>
+<p>You can immediately pass any script(s) returned from a
+<code>dySEM</code> scripter (e.g., <code>scriptCFA</code>) to your
+intended <code>lavaan</code> wrapper (we recommend <code>cfa</code>–be
+sure to disable any options that might fix parameters, as the scripter
+has already taken care of manually specifying which parameters to fix or
+estimate), with your preferred estimator and missing data treatment. For
+example, with dyadic invariance testing, we recommend starting with the
+most parsimonious model (an indistinguishable model), and gradually
+relaxing constraints on different groups of parameters:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#Fit fully indistinguishable model</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>qual.ind.fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(qual.indist.script, <span class="at">data =</span> DRES, <span class="at">std.lv =</span> <span class="cn">FALSE</span>, <span class="at">auto.fix.first=</span> <span class="cn">FALSE</span>, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#Fit residual invariance model</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>qual.res.fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(qual.res.script, <span class="at">data =</span> DRES, <span class="at">std.lv =</span> <span class="cn">FALSE</span>, <span class="at">auto.fix.first=</span> <span class="cn">FALSE</span>, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#Fit intercept invariance model</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>qual.int.fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(qual.int.script, <span class="at">data =</span> DRES, <span class="at">std.lv =</span> <span class="cn">FALSE</span>, <span class="at">auto.fix.first=</span> <span class="cn">FALSE</span>, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#Fit loading invariance model</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>qual.load.fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(qual.load.script, <span class="at">data =</span> DRES, <span class="at">std.lv =</span> <span class="cn">FALSE</span>, <span class="at">auto.fix.first=</span> <span class="cn">FALSE</span>, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#Fit configural invariance model</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>qual.config.fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(qual.config.script, <span class="at">data =</span> DRES, <span class="at">std.lv =</span> <span class="cn">FALSE</span>, <span class="at">auto.fix.first=</span> <span class="cn">FALSE</span>, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>At this point, the full arsenal of <code>lavaan</code>
+model-inspecting tools are at your disposal. Two that you will almost
+certainly want to make use of are <code>summary</code> and
+<code>anova</code>.</p>
+<p><code>summary</code> will useful for printing model fit information
+as well as parameter estimates and tests to your console. For
+example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">summary</span>(qual.config.fit, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>, <span class="at">rsquare =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><code>anova</code>, meanwhile, will enable you to perform comparisons
+of competing nested dyadic models. For example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">anova</span>(qual.config.fit, qual.load.fit, qual.int.fit, qual.res.fit, qual.ind.fit)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Chi-Squared Difference Test</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;                  Df    AIC    BIC  Chisq Chisq diff    RMSEA Df diff Pr(&gt;Chisq)</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; qual.config.fit 125 5102.8 5280.6 573.33                                       </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; qual.load.fit   133 5096.5 5252.2 583.09     9.7565 0.042954       8     0.2825</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; qual.int.fit    141 5089.1 5222.5 591.66     8.5669 0.024403       8     0.3801</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; qual.res.fit    150 5083.5 5191.9 604.04    12.3872 0.056237       9     0.1924</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; qual.ind.fit    152 5081.4 5184.2 605.97     1.9264 0.000000       2     0.3817</span></span></code></pre></div>
+<p>You can learn about what other kinds of detail you can extract from a
+fitted <code>lavaan</code> model <a href="https://lavaan.ugent.be/tutorial/inspect.html">here</a>.</p>
+</div>
+<div id="output" class="section level2">
+<h2>5. Output</h2>
+<p><code>dySEM</code> also contains functionality to help you quickly,
+correctly, and reproducibly generate output from your fitted model(s),
+in the forms of path diagrams and/or tables of statistical values. Path
+diagram creation is supported via the <a href="https://CRAN.R-project.org/package=semPlot"><code>semPlot</code></a>
+package’s <code>semPaths</code> function, whereas table creation is
+currently supported by the <a href="https://strengejacke.github.io/sjPlot/"><code>sjPlot</code></a>
+package’s <code>tab_df</code> function, though users should be aware
+that <a href="https://github.com/jsakaluk/dySEM/issues/28">we are
+considering</a> a move to the <a href="https://gt.rstudio.com"><code>gt</code></a> package for improved
+tabling capacity.</p>
+<p>The <code>outputModel</code> function is currently
+<code>dySEM</code>’s all-purpose outputting function.</p>
+<p>The useR must specify the <code>dvn</code> of scraped variables used
+to script the model and the type of model being outputted (e.g., “cfa”).
+UseRs can specify whether they only want a path diagram or some table(s)
+to be outputted (e.g., by setting either <code>figure = FALSE</code> or
+<code>table = FALSE</code>), but by default both are created. UseRs can
+specify a directory path to where they want their file(s) to be written
+and saved (e.g., setting <code>writeTo = &quot;.&quot;</code> to save in the
+current working directory). UseRs can further specify what kind of path
+diagram (e.g., using standardized or unstandardized value) or tables
+(e.g., featuring measurement- or structural-model parameter, or both)
+are created.</p>
+<p>Whatever options the useR specifies, <code>outputModel</code> is
+typically run without assigning its output to an object, as it’s mostly
+to facilitate statistical reporting for scientific articles:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">outputModel</span>(dvn, <span class="at">model =</span> <span class="st">&quot;cfa&quot;</span>, <span class="at">fit =</span> qual.config.fit, </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>            <span class="at">table =</span> <span class="cn">TRUE</span>, <span class="at">tabletype =</span> <span class="st">&quot;measurement&quot;</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>            <span class="at">figure =</span> <span class="cn">TRUE</span>, <span class="at">figtype =</span> <span class="st">&quot;unstandardized&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>            <span class="at">writeTo =</span> <span class="fu">tempdir</span>(), <span class="at">fileName =</span> <span class="st">&quot;dCFA_config&quot;</span>)</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

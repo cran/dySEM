@@ -1,0 +1,19 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Dyadic Measurement Invariance and Its Importance for Replicability in Romantic Relationship Science",
+  author   = c(as.person("John K. Sakaluk"),
+                        as.person("Alexandra N. Fisher"),
+                        as.person("Robyn E. Kilshaw")),
+  journal  = "Personal Relationships",
+  year     = "2021",
+  volume   = "28",
+  number   = "1",
+  header   = "To cite dySEM in publications use:",
+  pages    = "190-226",
+  doi      = "10.1111/pere.12341",
+  textVersion =
+  paste("Sakaluk, J. K., Fisher, A. N., & Kilshaw, R. E. (2021).",
+        "Dyadic Measurement invariance and its importance for replicability in romantic relationship science.",
+        "Personal Relationships, 28(1), 190-226.",
+        "https://doi.org/10.1111/pere.12341")
+)
