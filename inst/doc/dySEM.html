@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -392,16 +392,16 @@ other sorts of dyadic data analyses via <code>dySEM</code>.</p>
 <h2>1. Import and Wrangle Data</h2>
 <p>We will use a subset of <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/DRES-data.R"><code>DRES</code></a>,
 consisting of 121 dyadic couples’ ratings of relationship quality on 9
-of the <a href="https://psycnet.apa.org/record/2000-13970-007">PRQC</a>
-indicators (1 = <em>not at all</em>, 7 = <em>extremely</em>; all
-indicators positively keyed). Structural equation modeling (SEM)
-programs like <code>lavaan</code> require dyadic data to be in <em>dyad
-structure dataset</em>, whereby each row contains the data for one dyad,
-with separate columns for each observation (in this case, indicator
-variables of latent relationship quality) made for each member of the
-dyad. We may eventually build in data-transformation functions to go
-from various data structures to a <em>dyad structure</em>, but for now,
-we recommend <a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>tidyr::pivot_wider</code></a>
+of the PRQC (Fletcher, Simpson, &amp; Thomas, 2000) indicators (1 =
+<em>not at all</em>, 7 = <em>extremely</em>; all indicators positively
+keyed). Structural equation modeling (SEM) programs like
+<code>lavaan</code> require dyadic data to be in <em>dyad structure
+dataset</em>, whereby each row contains the data for one dyad, with
+separate columns for each observation (in this case, indicator variables
+of latent relationship quality) made for each member of the dyad. We may
+eventually build in data-transformation functions to go from various
+data structures to a <em>dyad structure</em>, but for now, we recommend
+<a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>tidyr::pivot_wider</code></a>
 or the tools provided by <a href="http://davidakenny.net/RDDD.htm">Ledermann &amp; Kenny
 (2014)</a></p>
 <p>Like many real-world analytic contexts, <a href="https://github.com/jsakaluk/dySEM/blob/0ceb8440ac71ce00777853cff4a7d177cf2a6db5/R/DRES-data.R"><code>DRES</code></a>
@@ -690,32 +690,26 @@ fitted <code>lavaan</code> model <a href="https://lavaan.ugent.be/tutorial/inspe
 correctly, and reproducibly generate output from your fitted model(s),
 in the forms of path diagrams and/or tables of statistical values. Path
 diagram creation is supported via the <a href="https://CRAN.R-project.org/package=semPlot"><code>semPlot</code></a>
-package’s <code>semPaths</code> function, whereas table creation is
-currently supported by the <a href="https://strengejacke.github.io/sjPlot/"><code>sjPlot</code></a>
-package’s <code>tab_df</code> function, though users should be aware
-that <a href="https://github.com/jsakaluk/dySEM/issues/28">we are
-considering</a> a move to the <a href="https://gt.rstudio.com"><code>gt</code></a> package for improved
-tabling capacity.</p>
-<p>The <code>outputModel</code> function is currently
-<code>dySEM</code>’s all-purpose outputting function.</p>
-<p>The useR must specify the <code>dvn</code> of scraped variables used
-to script the model and the type of model being outputted (e.g., “cfa”).
-UseRs can specify whether they only want a path diagram or some table(s)
-to be outputted (e.g., by setting either <code>figure = FALSE</code> or
-<code>table = FALSE</code>), but by default both are created. UseRs can
-specify a directory path to where they want their file(s) to be written
-and saved (e.g., setting <code>writeTo = &quot;.&quot;</code> to save in the
-current working directory). UseRs can further specify what kind of path
-diagram (e.g., using standardized or unstandardized value) or tables
-(e.g., featuring measurement- or structural-model parameter, or both)
-are created.</p>
-<p>Whatever options the useR specifies, <code>outputModel</code> is
-typically run without assigning its output to an object, as it’s mostly
-to facilitate statistical reporting for scientific articles:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">outputModel</span>(dvn, <span class="at">model =</span> <span class="st">&quot;cfa&quot;</span>, <span class="at">fit =</span> qual.config.fit, </span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>            <span class="at">table =</span> <span class="cn">TRUE</span>, <span class="at">tabletype =</span> <span class="st">&quot;measurement&quot;</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>            <span class="at">figure =</span> <span class="cn">TRUE</span>, <span class="at">figtype =</span> <span class="st">&quot;unstandardized&quot;</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>            <span class="at">writeTo =</span> <span class="fu">tempdir</span>(), <span class="at">fileName =</span> <span class="st">&quot;dCFA_config&quot;</span>)</span></code></pre></div>
+package’s <code>semPaths</code> function. Tabling, meanwhile, supports
+(optional) returning of <a href="https://CRAN.R-project.org/package=gt"><code>gt</code></a> tables,
+which can be further customized for publication-quality output (however
+functionality defaults to merely returning a data frame).</p>
+<p>For tabling, the useR must specify the <code>dvn</code> of scraped
+variables used to script the model and the type of model being outputted
+(e.g., “cfa”).</p>
+<p>For both tabling and path diagraming, UseRs can specify a directory
+path to where they want their file(s) to be written and saved (e.g.,
+setting <code>writeTo = &quot;.&quot;</code> to save in the current working
+directory). UseRs can further specify what kind of path diagram (e.g.,
+using standardized or unstandardized value) or tables (e.g., featuring
+measurement- or structural-model parameter, or both) are created.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">outputParamTab</span>(dvn, <span class="at">model =</span> <span class="st">&quot;cfa&quot;</span>, <span class="at">fit =</span> qual.indist.fit, </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>               <span class="at">tabletype =</span> <span class="st">&quot;measurement&quot;</span>, <span class="at">writeTo =</span> <span class="fu">tempdir</span>(), </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>               <span class="at">fileName =</span> <span class="st">&quot;cfa_indist&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">outputParamFig</span>(<span class="at">fit =</span> qual.indist.fit, <span class="at">figtype =</span> <span class="st">&quot;standardized&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>               <span class="at">writeTo =</span> <span class="fu">tempdir</span>(), </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>               <span class="at">fileName =</span> <span class="st">&quot;cfa_indist&quot;</span>)</span></code></pre></div>
 </div>
 
 

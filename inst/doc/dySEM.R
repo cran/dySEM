@@ -52,14 +52,17 @@ qual.config.fit <- lavaan::cfa(qual.config.script, data = DRES, std.lv = FALSE, 
 
 
 ## ----summary, eval = FALSE----------------------------------------------------
-#  summary(qual.config.fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+# summary(qual.config.fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
 ## ----anova--------------------------------------------------------------------
 anova(qual.config.fit, qual.load.fit, qual.int.fit, qual.res.fit, qual.ind.fit)
 
 ## ----dyoutput, eval = FALSE---------------------------------------------------
-#  outputModel(dvn, model = "cfa", fit = qual.config.fit,
-#              table = TRUE, tabletype = "measurement",
-#              figure = TRUE, figtype = "unstandardized",
-#              writeTo = tempdir(), fileName = "dCFA_config")
+# outputParamTab(dvn, model = "cfa", fit = qual.indist.fit,
+#                tabletype = "measurement", writeTo = tempdir(),
+#                fileName = "cfa_indist")
+# 
+# outputParamFig(fit = qual.indist.fit, figtype = "standardized",
+#                writeTo = tempdir(),
+#                fileName = "cfa_indist")
 
